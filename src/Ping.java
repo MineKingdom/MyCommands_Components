@@ -1,5 +1,6 @@
-import net.minekingdom.MyCommands.MyCommands;
+import java.util.logging.Level;
 
+import org.spout.api.Spout;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -7,13 +8,14 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
+import org.spout.api.plugin.Plugin;
 
 public class Ping {
     
     @SuppressWarnings("unused")
-    private final MyCommands plugin;
+    private Plugin plugin;
     
-    public Ping(MyCommands plugin)
+    public Ping(Plugin plugin)
     {
         this.plugin = plugin;
     }
@@ -22,14 +24,7 @@ public class Ping {
     @CommandPermissions("mycommands.ping")
     public void ping(CommandContext args, CommandSource source) throws CommandException
     {
-        if ( source instanceof Player )
-        {
-            MyCommands.sendMessage(source, ChatStyle.CYAN, "Pong!");
-        }
-        else
-        {
-            MyCommands.log("Pong!");
-        }
+        source.sendMessage(ChatStyle.CYAN, "Pong!");
     }
 
 }

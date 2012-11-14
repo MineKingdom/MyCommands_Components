@@ -1,5 +1,3 @@
-import net.minekingdom.MyCommands.MyCommands;
-
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -10,13 +8,14 @@ import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
 import org.spout.api.geo.cuboid.Block;
 import org.spout.api.geo.discrete.Point;
+import org.spout.api.plugin.Plugin;
 
 public class Ascend {
     
     @SuppressWarnings("unused")
-    private final MyCommands plugin;
+    private Plugin plugin;
     
-    public Ascend(MyCommands plugin)
+    public Ascend(Plugin plugin)
     {
         this.plugin = plugin;
     }
@@ -45,7 +44,7 @@ public class Ascend {
                 }
             }
             
-            MyCommands.sendMessage((Player) source, ChatStyle.CYAN, "Ascended a level.");
+            source.sendMessage(ChatStyle.CYAN, "Ascended a level.");
         }
     }
 

@@ -9,15 +9,13 @@ import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
 import org.spout.api.geo.cuboid.Block;
 import org.spout.api.geo.discrete.Point;
-import org.spout.api.material.BlockMaterial;
-
-import net.minekingdom.MyCommands.MyCommands;
+import org.spout.api.plugin.Plugin;
 
 public class Teleport {
     
-    private final MyCommands plugin;
+    private Plugin plugin;
     
-    public Teleport(MyCommands plugin)
+    public Teleport(Plugin plugin)
     {
         this.plugin = plugin;
     }
@@ -47,14 +45,11 @@ public class Teleport {
             else
             {
                 targetArgs = args.get(1);
-                teleported = plugin.getServer().getPlayer(args.get(0).getPlainString(), false);
+                teleported = plugin.getEngine().getPlayer(args.getString(0), false);
             }
             
             if ( teleported == null )
-            {
-                MyCommands.sendErrorMessage(source, "player_not_found");
-                return;
-            }
+                throw new CommandException("Error: The specified player was not found.");
             
             split = targetArgs.getPlainString().split("\\+");
             targetString = split[0];
@@ -63,10 +58,7 @@ public class Teleport {
                 modifierString = split[1];
             }
             else if ( split.length > 2 )
-            {
-                MyCommands.sendErrorMessage(source, "invalid_modifier");
-                return;
-            }
+                throw new CommandException("Error: The specified modifier is invalid.");
             
             Point destination;
             Point modifier;
@@ -75,16 +67,13 @@ public class Teleport {
             
             if ( targetString.startsWith("(") )
             {
-                destination = this.getVector(teleported.getWorld(), targetString);
+                destination = getVector(teleported.getWorld(), targetString);
             }
             else
             {
-                Player destinationPlayer = plugin.getServer().getPlayer(targetString, false);
+                Player destinationPlayer = plugin.getEngine().getPlayer(targetString, false);
                 if ( destinationPlayer == null )
-                {
-                    MyCommands.sendErrorMessage(source, "player_not_found");
-                    return;
-                }
+                    throw new CommandException("Error: The targetted player was not found.");
                 
                 destinationName = destinationPlayer.getName();
                 destination = destinationPlayer.getTransform().getPosition();
@@ -92,7 +81,7 @@ public class Teleport {
             
             if ( modifierString != null )
             {
-                modifier = this.getVector(destination.getWorld(), modifierString);
+                modifier = getVector(destination.getWorld(), modifierString);
                 destination = new Point(modifier.getWorld(), 
                         destination.getX() + modifier.getX(), 
                         destination.getY() + modifier.getY(), 
@@ -100,10 +89,7 @@ public class Teleport {
             }
             
             if ( destination == null )
-            {
-                MyCommands.sendErrorMessage(source, "invalid_destination");
-                return;
-            }
+                throw new CommandException("Error: The destination is invalid.");
             
             if ( !force )
                 destination = safeLocation(destination);
@@ -112,7 +98,7 @@ public class Teleport {
                 destinationName = "(" + destination.getWorld().getName() + ":" + destination.getX() + ", " + destination.getY() + ", " + destination.getZ() + ")";
             
             teleported.teleport(destination.add(0, 0.1, 0));
-            MyCommands.sendMessage(source, "teleported to : ", destinationName);
+            source.sendMessage(ChatStyle.CYAN, "Teleported to : ", destinationName);
             return;
         }
     }
@@ -196,7 +182,7 @@ public class Teleport {
         
         if ( !worldName.equals("") )
         {
-            World newWorld = MyCommands.getInstance().getServer().getWorld(worldName);
+            World newWorld = plugin.getEngine().getWorld(worldName);
             if ( newWorld == null )
                 return null;
             

@@ -21,7 +21,7 @@ public class VanillaWeather {
     
     @Command(aliases = {"weather"}, desc = "Sets the weather of a Vanilla world", min = 1, max = 2)
     @CommandPermissions("mycommands.weather")
-    public void time(CommandContext args, CommandSource source) throws CommandException
+    public void weather(CommandContext args, CommandSource source) throws CommandException
     {
         World world;
         if ( source instanceof Player && args.length() == 1 )

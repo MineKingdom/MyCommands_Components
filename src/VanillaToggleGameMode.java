@@ -6,7 +6,7 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.component.living.Human;
+import org.spout.vanilla.component.living.passive.Human;
 import org.spout.vanilla.data.GameMode;
 
 public class VanillaToggleGameMode {
@@ -18,7 +18,7 @@ public class VanillaToggleGameMode {
         this.plugin = plugin;
     }
     
-    @Command(aliases = {"togglegamemode", "tgm"}, desc = "Toggles the game mode", max = 1)
+    @Command(aliases = {"tgm", "togglegamemode"}, desc = "Toggles the game mode", max = 1)
     @CommandPermissions("mycommands.togglegamemode")
     public void togglegamemode(CommandContext args, CommandSource source) throws CommandException
     {

@@ -20,7 +20,7 @@ public class Teleport {
         this.plugin = plugin;
     }
     
-    @Command(aliases = {"teleport", "tp", "tele"}, desc = "Teleports a player to the specified destination", flags = "f", min = 1, max = 2, usage = "[Player] <Destination>[+(world:x,y,z)]")
+    @Command(aliases = {"tp", "teleport", "tele"}, desc = "Teleports a player to the specified destination", flags = "f", min = 1, max = 2, usage = "[Player] <Destination>[+(world:x,y,z)]")
     @CommandPermissions("mycommands.teleport")
     public void teleport(CommandContext args, CommandSource source) throws CommandException
     {

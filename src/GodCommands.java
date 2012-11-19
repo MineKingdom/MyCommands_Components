@@ -9,7 +9,7 @@ import org.spout.api.exception.CommandException;
 
 public class GodCommands {
 
-    @Command(aliases = {"godmode", "god"}, desc = "Grants immortality to a player")
+    @Command(aliases = {"god", "godmode"}, desc = "Grants immortality to a player")
     @CommandPermissions("mycommands.god")
     public static void godmode(CommandContext args, CommandSource source) throws CommandException
     {

@@ -7,13 +7,15 @@ import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.discrete.Point;
 import org.spout.api.plugin.Plugin;
+import org.spout.vanilla.material.VanillaMaterials;
+import org.spout.vanilla.protocol.msg.world.block.BlockChangeMessage;
 
-public class Up {
+public class VanillaUp {
     
     @SuppressWarnings("unused")
     private Plugin plugin;
     
-    public Up(Plugin plugin)
+    public VanillaUp(Plugin plugin)
     {
         this.plugin = plugin;
     }
@@ -38,6 +40,8 @@ public class Up {
             
             final Player player = (Player) source;
             final Point p = player.getTransform().getPosition();
+            
+            player.getSession().send(false, new BlockChangeMessage(p.getBlockX(), p.getBlockY() - 1 + n, p.getBlockZ(), (short) VanillaMaterials.GLASS.getMinecraftId(), 0));
             
             player.teleport(new Point(p.getWorld(), p.getX(), p.getY() + n + 0.1f, p.getZ()));
             source.sendMessage(ChatStyle.CYAN, "Raised your position by " + n + ".");

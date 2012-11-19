@@ -1,3 +1,4 @@
+import org.spout.api.Server;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -5,11 +6,11 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
+import org.spout.vanilla.VanillaPlugin;
 import org.spout.vanilla.configuration.VanillaConfiguration;
 
 public class VanillaMOTD {
-    
-    @SuppressWarnings("unused")
+
     private Plugin plugin;
     
     public VanillaMOTD(Plugin plugin)
@@ -27,7 +28,9 @@ public class VanillaMOTD {
         {
             String motd = args.getJoinedString(0).getPlainString();
             VanillaConfiguration.MOTD.setValue(motd);
-            source.sendMessage(ChatStyle.CYAN, "Message of the day set to : " + motd);
+            VanillaPlugin.getInstance().getConfig().save();
+            
+            ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " has set the message of the day to : " + motd);
         }
     }
 }

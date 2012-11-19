@@ -1,3 +1,4 @@
+import org.spout.api.Server;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -31,12 +32,16 @@ public class VanillaWeather {
         else
             throw new CommandException("You have to specify a world to change it's time from the console.");
         
-        Weather weather = Weather.get(args.getString(0).toUpperCase());
-        
-        if ( weather == null )
+        try
+        {
+            Weather weather = Weather.get(args.getString(0).toUpperCase());
+            
+            VanillaSky.getSky(world).setWeather(weather);
+            ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
+        }
+        catch ( IllegalArgumentException e )
+        {
             throw new CommandException("'" + args.getString(0) + "' is not a valid weather state.");
-        
-        VanillaSky.getSky(world).setWeather(weather);
-        source.sendMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
+        }
     }
 }

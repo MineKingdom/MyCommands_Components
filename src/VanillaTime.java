@@ -1,3 +1,4 @@
+import org.spout.api.Server;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -19,7 +20,7 @@ public class VanillaTime {
     }
     
     @Command(aliases = {"time"}, desc = "Sets the time of a Vanilla world", min = 1, max = 2)
-    @CommandPermissions("mycommands.togglegamemode")
+    @CommandPermissions("mycommands.time")
     public void time(CommandContext args, CommandSource source) throws CommandException
     {
         World world;
@@ -58,6 +59,6 @@ public class VanillaTime {
         }
         
         VanillaSky.getSky(world).setTime(time);
-        source.sendMessage(ChatStyle.CYAN, source.getName() + " sets the time of " + world.getName() + " to " + (int)(Math.floor(time / 1000 + 6) % 24) + ":" + (int)Math.floor(time % 1000 * 60 / 1000) + ".");
+        ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " sets the time of " + world.getName() + " to " + (int)(Math.floor(time / 1000 + 6) % 24) + ":" + (int)Math.floor(time % 1000 * 60 / 1000) + ".");
     }
 }

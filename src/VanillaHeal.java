@@ -6,7 +6,7 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.component.living.Human;
+import org.spout.vanilla.component.living.passive.Human;
 import org.spout.vanilla.source.HealthChangeCause;
 
 

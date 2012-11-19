@@ -7,18 +7,18 @@ import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
 import org.spout.vanilla.configuration.VanillaConfiguration;
 
-public class VanillaToggleOnlineMode {
+public class VanillaOnlineMode {
     
     @SuppressWarnings("unused")
     private Plugin plugin;
     
-    public VanillaToggleOnlineMode(Plugin plugin)
+    public VanillaOnlineMode(Plugin plugin)
     {
         this.plugin = plugin;
     }
     
-    @Command(aliases = {"toggleonlinemode", "onlinemode", "tom"}, max = 1, desc = "Sets the vanilla server to offline or online mode")
-    @CommandPermissions("mycommands.toggleonlinemode")
+    @Command(aliases = {"onlinemode", "om"}, max = 1, desc = "Sets the vanilla server to offline or online mode")
+    @CommandPermissions("mycommands.onlinemode")
     public void motd(CommandContext args, CommandSource source) throws CommandException
     {
         boolean online = args.length() == 0 ? !VanillaConfiguration.ONLINE_MODE.getBoolean() : Boolean.parseBoolean(args.getString(0));

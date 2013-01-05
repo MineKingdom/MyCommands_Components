@@ -1,3 +1,5 @@
+import net.minekingdom.MyCommands.annotated.CommandPlatform;
+
 import org.spout.api.chat.ChatSection;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
@@ -9,6 +11,7 @@ import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
 import org.spout.api.geo.cuboid.Block;
 import org.spout.api.geo.discrete.Point;
+import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 
 public class Teleport {
@@ -20,8 +23,15 @@ public class Teleport {
         this.plugin = plugin;
     }
     
-    @Command(aliases = {"tp", "teleport", "tele"}, desc = "Teleports a player to the specified destination", flags = "f", min = 1, max = 2, usage = "[Player] <Destination>[+(world:x,y,z)]")
+    @Command(aliases = {"tp", "teleport", "tele"}, flags = "f", min = 1, max = 2, usage = "[Player] <Destination>[+(world:x,y,z)]",
+             desc = "Teleports a player to the specified destination.\n" +
+                    "Without the -f flag, the command will try to find a safe location ( i.e. on solid ground, with proper space ) " +
+                    "to teleport the target to.\n" +
+                    "The command supports coordinate modifiers. This means the destination can be modified by adding other coordinates.\n" +
+                    "For instance, it is possible to be teleported 5 blocks higher than the destination using \"<destination>+(0,5,0)\"; " +
+                    "it is even possible to teleport to the destination's coordinate, but in an other world, using \"<destination>+(world:0,0,0)\".")
     @CommandPermissions("mycommands.teleport")
+    @CommandPlatform(Platform.SERVER)
     public void teleport(CommandContext args, CommandSource source) throws CommandException
     {
         if ( source instanceof Player )

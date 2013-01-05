@@ -1,3 +1,5 @@
+import net.minekingdom.MyCommands.annotated.CommandPlatform;
+
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -6,6 +8,7 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.discrete.Point;
+import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 
 public class Whois {
@@ -19,25 +22,30 @@ public class Whois {
     
     @Command(aliases = {"whois", "info"}, desc = "Gets information on a player", max = 1)
     @CommandPermissions("mycommands.whois")
+    @CommandPlatform(Platform.SERVER)
     public void whois(CommandContext args, CommandSource source) throws CommandException
     {
-        if ( source instanceof Player )
+        Player player;
+        if ( args.length() == 1 )
         {
-            Player player;
-            if ( args.length() == 1 )
-                player = plugin.getEngine().getPlayer(args.getString(0), false);
-            else
-                player = (Player) source;
-            
+            player = plugin.getEngine().getPlayer(args.getString(0), false);
             if ( player == null )
                 throw new CommandException("Player " + args.getString(0) + " could not be found.");
-            
-            Point p = player.getTransform().getPosition();
-            
-            source.sendMessage(ChatStyle.CYAN, "Player : " + player.getName() );
-            source.sendMessage(ChatStyle.CYAN, "IP Address : " + player.getAddress().getHostAddress() );
-            source.sendMessage(ChatStyle.CYAN, "world : " + player.getWorld().getName() + ", position : " + p.getX() + ", " + p.getY() + ", " + p.getZ());
         }
+        else if ( source instanceof Player )
+        {
+            player = (Player) source;
+        }
+        else
+        {
+            throw new CommandException("The command must target a player.");
+        }
+        
+        Point p = player.getTransform().getPosition();
+        
+        source.sendMessage(ChatStyle.CYAN, "Player : " + player.getName() );
+        source.sendMessage(ChatStyle.CYAN, "IP Address : " + player.getAddress().getHostAddress() );
+        source.sendMessage(ChatStyle.CYAN, "world : " + player.getWorld().getName() + ", position : " + p.getX() + ", " + p.getY() + ", " + p.getZ());
     }
 
 }

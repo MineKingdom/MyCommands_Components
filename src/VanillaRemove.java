@@ -1,10 +1,7 @@
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.Set;
-
-import net.minekingdom.MyCommands.MyCommands;
 
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
@@ -15,37 +12,61 @@ import org.spout.api.component.Component;
 import org.spout.api.entity.Entity;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
-import org.spout.api.geo.discrete.Point;
-import org.spout.vanilla.VanillaPlugin;
-import org.spout.vanilla.component.living.Hostile;
-import org.spout.vanilla.component.living.Living;
-import org.spout.vanilla.component.living.Passive;
-import org.spout.vanilla.component.misc.PickupItemComponent;
+import org.spout.api.plugin.Plugin;
+import org.spout.vanilla.protocol.entity.creature.CreatureType;
 
 public class VanillaRemove {
     
-    private final MyCommands plugin;
+    private final Plugin plugin;
     
-    public VanillaRemove(MyCommands plugin)
+    public VanillaRemove(Plugin plugin)
     {
         this.plugin = plugin;
     }
     
-    @SuppressWarnings("unchecked")
-    @Command(aliases = {"remove", "rm"}, desc = "Removes entities around the source.", max = 2, usage = "<type1,type2[,...typen]> [radius]")
+    @Command(aliases = {"remove", "rm"}, desc = "Removes entities around the source.", min = 1, max = 2, usage = "<type-1,type-2[,...type-n]> [radius]")
     @CommandPermissions("mycommands.remove")
     public void remove(CommandContext args, CommandSource source) throws CommandException
     {
         if ( source instanceof Player )
         {
             final Player player = (Player) source;
-            final Point p = player.getTransform().getPosition();
             
             String[] arr = args.getString(0).split(",");
-            Set<String> types = new HashSet<String>();
+            
+            Set<String> add = new HashSet<String>();
+            Set<String> remove = new HashSet<String>();
+            
             for ( String s : arr )
             {
-                types.add(s.toLowerCase());
+                if ( s.startsWith("!") )
+                    remove.add(s.substring(1).toUpperCase());
+                else
+                    add.add(s.toUpperCase());
+            }
+            
+            Set<Class<? extends Component>> types = new HashSet<Class<? extends Component>>();
+            
+            if ( add.isEmpty() )
+            {
+                for ( CreatureType type : CreatureType.values() )
+                    types.add(type.getComponent());
+            }
+            else
+            {
+                for ( String s : add )
+                {
+                    CreatureType creature = CreatureType.byName(s);
+                    if ( creature != null )
+                        types.add(creature.getComponent());
+                }
+            }
+            
+            for ( String s : remove )
+            {
+                CreatureType creature = CreatureType.byName(s);
+                if ( creature != null )
+                    types.remove(creature.getComponent());
             }
             
             int radius;
@@ -68,29 +89,17 @@ public class VanillaRemove {
                 if ( e instanceof Player )
                     continue;
                 
-                if ( types.contains("all") )
+                for ( Class<? extends Component> type : types )
                 {
-                    e.remove();
-                    continue;
+                    if ( e.has(type) )
+                    {
+                        e.remove();
+                        break;
+                    }
                 }
-                
-                if ( types.contains("items") && e.has(PickupItemComponent.class) )
-                {
-                    e.remove();
-                    continue;
-                }
-                
-                if ( types.contains("living") && e.has(Living.class))
-                {
-                    e.remove();
-                    continue;
-                }
-
-
-                
             }
             
-            MyCommands.sendMessage((Player) source, ChatStyle.CYAN, "Removed " + " entities.");
+            source.sendMessage(ChatStyle.CYAN, "Removed " + " entities.");
         }
     }
 

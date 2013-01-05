@@ -1,3 +1,5 @@
+import net.minekingdom.MyCommands.annotated.CommandPlatform;
+
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -8,6 +10,7 @@ import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
 import org.spout.api.geo.cuboid.Block;
 import org.spout.api.geo.discrete.Point;
+import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 
 public class Ascend {
@@ -22,6 +25,7 @@ public class Ascend {
     
     @Command(aliases = {"ascend", "asc"}, desc = "Ascends a level")
     @CommandPermissions("mycommands.ascend")
+    @CommandPlatform(Platform.SERVER)
     public void ascend(CommandContext args, CommandSource source) throws CommandException
     {
         if ( source instanceof Player )

@@ -1,3 +1,5 @@
+import net.minekingdom.MyCommands.annotated.CommandPlatform;
+
 import org.spout.api.Server;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
@@ -7,6 +9,7 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
+import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 import org.spout.vanilla.component.world.VanillaSky;
 
@@ -19,9 +22,7 @@ public class VanillaTime {
         this.plugin = plugin;
     }
     
-    @Command(aliases = {"time"}, desc = "Sets the time of a Vanilla world", min = 1, max = 2)
-    @CommandPermissions("mycommands.time")
-    public void time(CommandContext args, CommandSource source) throws CommandException
+    private World getWorld(CommandContext args, CommandSource source) throws CommandException
     {
         World world;
         if ( source instanceof Player && args.length() == 1 )
@@ -31,34 +32,62 @@ public class VanillaTime {
         else
             throw new CommandException("You have to specify a world to change it's time from the console.");
         
-        long time;
+        if ( world == null )
+            throw new CommandException("'" + args.getString(1) + "' is not a valid world.");
+        
+        return world;
+    }
+    
+    private long getTime(CommandContext args, CommandSource source) throws CommandException
+    {
         String t = args.getString(0);
         if ( t.equals("day") )
-            time = 6000;
+            return 6000;
         else if ( t.equals("dawn") )
-            time = 0;
+            return 0;
         else if ( t.equals("dusk") )
-            time = 12000;
+            return 12000;
         else if ( t.equals("night") )
-            time = 18000;
+            return 18000;
         else if ( t.matches("[0-9]+:[0-9]+") )
         {
             String[] s = t.split(":");
-            time = (Long.parseLong(s[0]) - 6) * 1000 + Long.parseLong(s[1]) * 1000 / 60;
+            return (Long.parseLong(s[0]) - 6) * 1000 + Long.parseLong(s[1]) * 1000 / 60;
         }
         else
         {
             try
             {
-                time = Long.parseLong(t);
+                return Long.parseLong(t);
             }
             catch ( NumberFormatException e )
             {
                 throw new CommandException("'" + t + "' is not a valid time.");
             }
         }
-        
+    }
+    
+    @Command(aliases = {"time"}, desc = "Sets the time of a Vanilla world", min = 1, max = 2)
+    @CommandPermissions("mycommands.time")
+    @CommandPlatform(Platform.SERVER)
+    public void serverTime(CommandContext args, CommandSource source) throws CommandException
+    {
+        World world = getWorld(args, source);
+        long time = getTime(args, source);
+
         VanillaSky.getSky(world).setTime(time);
         ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " sets the time of " + world.getName() + " to " + (int)(Math.floor(time / 1000 + 6) % 24) + ":" + (int)Math.floor(time % 1000 * 60 / 1000) + ".");
+    }
+    
+    @Command(aliases = {"time"}, desc = "Sets the time of a Vanilla world", min = 1, max = 2)
+    @CommandPermissions("mycommands.time")
+    @CommandPlatform(Platform.CLIENT)
+    public void clientTime(CommandContext args, CommandSource source) throws CommandException
+    {
+        World world = getWorld(args, source);
+        long time = getTime(args, source);
+
+        VanillaSky.getSky(world).setTime(time);
+        source.sendMessage(ChatStyle.CYAN, "You have set the time of " + world.getName() + " to " + (int)(Math.floor(time / 1000 + 6) % 24) + ":" + (int)Math.floor(time % 1000 * 60 / 1000) + ".");
     }
 }

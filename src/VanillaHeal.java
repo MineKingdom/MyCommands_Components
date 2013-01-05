@@ -1,3 +1,5 @@
+import net.minekingdom.MyCommands.annotated.CommandPlatform;
+
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -5,10 +7,10 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
+import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.component.living.passive.Human;
-import org.spout.vanilla.source.HealthChangeCause;
-
+import org.spout.vanilla.component.living.neutral.Human;
+import org.spout.vanilla.event.cause.HealthChangeCause;
 
 public class VanillaHeal {
     
@@ -21,6 +23,7 @@ public class VanillaHeal {
     
     @Command(aliases = {"heal"}, max = 1, desc = "Heal the specified player.")
     @CommandPermissions("mycommands.heal")
+    @CommandPlatform(Platform.SERVER)
     public void heal(CommandContext args, CommandSource source) throws CommandException
     {
         Player player = null;

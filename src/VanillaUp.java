@@ -8,7 +8,6 @@ import org.spout.api.exception.CommandException;
 import org.spout.api.geo.discrete.Point;
 import org.spout.api.plugin.Plugin;
 import org.spout.vanilla.material.VanillaMaterials;
-import org.spout.vanilla.protocol.msg.world.block.BlockChangeMessage;
 
 public class VanillaUp {
     
@@ -22,7 +21,7 @@ public class VanillaUp {
     
     @Command(aliases = {"up"}, desc = "Raise your position by <x>.", min = 1, max = 1, usage = "<x>")
     @CommandPermissions("mycommands.up")
-    public void ping(CommandContext args, CommandSource source) throws CommandException
+    public void up(CommandContext args, CommandSource source) throws CommandException
     {
         if ( source instanceof Player )
         {
@@ -41,7 +40,7 @@ public class VanillaUp {
             final Player player = (Player) source;
             final Point p = player.getTransform().getPosition();
             
-            player.getSession().send(false, new BlockChangeMessage(p.getBlockX(), p.getBlockY() - 1 + n, p.getBlockZ(), (short) VanillaMaterials.GLASS.getMinecraftId(), 0));
+            p.getWorld().getBlock(p.getBlockX(), p.getBlockY() - 1 + n, p.getBlockZ()).setMaterial(VanillaMaterials.GLASS);
             
             player.teleport(new Point(p.getWorld(), p.getX(), p.getY() + n + 0.1f, p.getZ()));
             source.sendMessage(ChatStyle.CYAN, "Raised your position by " + n + ".");

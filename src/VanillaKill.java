@@ -6,9 +6,8 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.component.living.passive.Human;
-import org.spout.vanilla.source.HealthChangeCause;
-
+import org.spout.vanilla.component.living.neutral.Human;
+import org.spout.vanilla.event.cause.HealthChangeCause;
 
 public class VanillaKill {
     
@@ -44,7 +43,6 @@ public class VanillaKill {
            
            player = (Player) source;
            source.sendMessage(ChatStyle.RED, "Killed !");
-           
         }    
         
         player.get(Human.class).getHealth().kill(HealthChangeCause.COMMAND);

@@ -2,8 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import net.minekingdom.MyCommands.CommandLoadOrder;
-import net.minekingdom.MyCommands.CommandLoadOrder.Order;
+import net.minekingdom.MyCommands.annotated.CommandLoadOrder;
+import net.minekingdom.MyCommands.annotated.CommandPlatform;
+import net.minekingdom.MyCommands.annotated.CommandLoadOrder.Order;
 
 import org.spout.api.chat.ChatArguments;
 import org.spout.api.chat.ChatSection;
@@ -14,10 +15,11 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
-import org.spout.api.event.server.ServerStartEvent;
+import org.spout.api.event.engine.EngineStartEvent;
 import org.spout.api.event.server.plugin.PluginDisableEvent;
 import org.spout.api.event.server.plugin.PluginEnableEvent;
 import org.spout.api.exception.CommandException;
+import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 
 @CommandLoadOrder(Order.LAST)
@@ -33,7 +35,7 @@ public class Help implements Listener {
     }
     
     @EventHandler
-    public void onServerStart(ServerStartEvent event)
+    public void onEngineStart(EngineStartEvent event)
     {
         this.commands = formatCommands(plugin.getEngine().getRootCommand().getChildCommands());
     }
@@ -68,9 +70,10 @@ public class Help implements Listener {
                 }
                 
                 if ( commands.get(i).getPreferredName().compareTo(command.getPreferredName()) == 0 )
-                {
                     break;
-                }
+                
+                if ( i == commands.size() - 1 )
+                    commands.add(command);
             }
         }
         
@@ -79,6 +82,7 @@ public class Help implements Listener {
     
     @Command(aliases = {"help"}, flags = "h", usage = "[topic] [page]", desc = "Prints the documentation")
     @CommandPermissions("mycommands.help")
+    @CommandPlatform(Platform.ALL)
     public void help(CommandContext args, CommandSource source) throws CommandException
     {
         if ( args.length() == 0 )
@@ -134,7 +138,7 @@ public class Help implements Listener {
             
             if ( command.getChildCommands().isEmpty() )
             {
-                output += "\n" + command.getUsage() + " : \n" + command.getHelp();
+                output += "\n" + command.getUsage() + "\n{{YELLOW}}" + command.getHelp();
                 source.sendMessage(ChatArguments.fromFormatString(output));
                 return;
             }

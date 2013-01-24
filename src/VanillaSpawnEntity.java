@@ -7,7 +7,7 @@ import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
 import org.spout.engine.entity.SpoutEntity;
-import org.spout.vanilla.protocol.entity.creature.CreatureType;
+import org.spout.vanilla.plugin.protocol.entity.creature.CreatureType;
 
 public class VanillaSpawnEntity {
     
@@ -27,7 +27,7 @@ public class VanillaSpawnEntity {
             final Player player = (Player) source;
             final Entity entity = new SpoutEntity(player.getTransform().getPosition());
             
-            CreatureType type = CreatureType.byName(args.getString(0).toUpperCase());
+            CreatureType type = CreatureType.valueOf(args.getString(0).toUpperCase());
             if ( type == null )
             {
                 String types = "";
@@ -38,7 +38,7 @@ public class VanillaSpawnEntity {
                 throw new CommandException("'" + args.getString(0) + "' is not a valid entity type. Valid types are : \n" + types);
             }
             
-            entity.add(type.getComponent());
+            entity.add(type.getComponentType());
             player.getWorld().spawnEntity(entity);
         }
     }

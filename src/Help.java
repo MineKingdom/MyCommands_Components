@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.Set;
 
 import net.minekingdom.MyCommands.annotated.CommandLoadOrder;
-import net.minekingdom.MyCommands.annotated.CommandPlatform;
 import net.minekingdom.MyCommands.annotated.CommandLoadOrder.Order;
 
 import org.spout.api.chat.ChatArguments;
@@ -19,7 +18,6 @@ import org.spout.api.event.engine.EngineStartEvent;
 import org.spout.api.event.server.plugin.PluginDisableEvent;
 import org.spout.api.event.server.plugin.PluginEnableEvent;
 import org.spout.api.exception.CommandException;
-import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 
 @CommandLoadOrder(Order.LAST)
@@ -82,7 +80,6 @@ public class Help implements Listener {
     
     @Command(aliases = {"help"}, flags = "h", usage = "[topic] [page]", desc = "Prints the documentation")
     @CommandPermissions("mycommands.help")
-    @CommandPlatform(Platform.ALL)
     public void help(CommandContext args, CommandSource source) throws CommandException
     {
         if ( args.length() == 0 )

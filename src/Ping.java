@@ -1,12 +1,9 @@
-import net.minekingdom.MyCommands.annotated.CommandPlatform;
-
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
-import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 
 public class Ping {
@@ -21,7 +18,6 @@ public class Ping {
     
     @Command(aliases = {"ping"}, desc = "Pings the server")
     @CommandPermissions("mycommands.ping")
-    @CommandPlatform(Platform.SERVER)
     public void ping(CommandContext args, CommandSource source) throws CommandException
     {
         source.sendMessage(ChatStyle.CYAN, "Pong!");

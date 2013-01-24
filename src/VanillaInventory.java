@@ -1,5 +1,3 @@
-import net.minekingdom.MyCommands.annotated.CommandPlatform;
-
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
@@ -8,10 +6,10 @@ import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.component.inventory.PlayerInventory;
-import org.spout.vanilla.inventory.util.GridInventoryConverter;
-import org.spout.vanilla.inventory.window.Window;
-import org.spout.vanilla.inventory.window.WindowType;
+import org.spout.vanilla.plugin.component.inventory.PlayerInventory;
+import org.spout.vanilla.plugin.inventory.util.GridInventoryConverter;
+import org.spout.vanilla.plugin.inventory.window.Window;
+import org.spout.vanilla.plugin.inventory.window.WindowType;
 
 public class VanillaInventory {
     
@@ -24,7 +22,6 @@ public class VanillaInventory {
     
     @Command(aliases = {"inv", "inventory"}, min = 1, max = 1, desc = "Opens the inventory of a player")
     @CommandPermissions("mycommands.inventory")
-    @CommandPlatform(Platform.SERVER)
     public void inventory(CommandContext args, CommandSource source) throws CommandException
     {
         if ( !(source instanceof Player) )

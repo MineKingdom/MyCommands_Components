@@ -13,7 +13,7 @@ import org.spout.api.entity.Entity;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.protocol.entity.creature.CreatureType;
+import org.spout.vanilla.plugin.protocol.entity.creature.CreatureType;
 
 public class VanillaRemove {
     
@@ -50,23 +50,23 @@ public class VanillaRemove {
             if ( add.isEmpty() )
             {
                 for ( CreatureType type : CreatureType.values() )
-                    types.add(type.getComponent());
+                    types.add(type.getComponentType());
             }
             else
             {
                 for ( String s : add )
                 {
-                    CreatureType creature = CreatureType.byName(s);
+                    CreatureType creature = CreatureType.valueOf(s);
                     if ( creature != null )
-                        types.add(creature.getComponent());
+                        types.add(creature.getComponentType());
                 }
             }
             
             for ( String s : remove )
             {
-                CreatureType creature = CreatureType.byName(s);
+                CreatureType creature = CreatureType.valueOf(s);
                 if ( creature != null )
-                    types.remove(creature.getComponent());
+                    types.remove(creature.getComponentType());
             }
             
             int radius;

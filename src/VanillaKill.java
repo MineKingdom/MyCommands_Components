@@ -6,8 +6,8 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.component.living.neutral.Human;
-import org.spout.vanilla.event.cause.HealthChangeCause;
+import org.spout.vanilla.api.event.cause.HealthChangeCause;
+import org.spout.vanilla.plugin.component.living.neutral.Human;
 
 public class VanillaKill {
     
@@ -32,7 +32,7 @@ public class VanillaKill {
                throw new CommandException("The specified player was not found.");
 
            source.sendMessage(ChatStyle.CYAN, args.getString(0) + " has been slain.");
-           player.sendMessage(ChatStyle.RED, "Killed !");
+           player.sendMessage(ChatStyle.RED, "You died from an invisible yet powerful force.");
         }
         else
         {
@@ -42,11 +42,10 @@ public class VanillaKill {
            }
            
            player = (Player) source;
-           source.sendMessage(ChatStyle.RED, "Killed !");
+           source.sendMessage(ChatStyle.RED, "You died from an invisible yet powerful force.");
         }    
         
         player.get(Human.class).getHealth().kill(HealthChangeCause.COMMAND);
-        
     }
 
 }

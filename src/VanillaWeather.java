@@ -1,5 +1,3 @@
-import net.minekingdom.MyCommands.annotated.CommandPlatform;
-
 import org.spout.api.Server;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
@@ -9,10 +7,9 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
-import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.component.world.VanillaSky;
-import org.spout.vanilla.data.Weather;
+import org.spout.vanilla.api.data.Weather;
+import org.spout.vanilla.plugin.component.world.VanillaSky;
 
 public class VanillaWeather {
     
@@ -41,31 +38,29 @@ public class VanillaWeather {
     
     @Command(aliases = {"weather"}, usage = "<weather> [world]", desc = "Sets the weather of a Vanilla world", min = 1, max = 2)
     @CommandPermissions("mycommands.weather")
-    @CommandPlatform(Platform.SERVER)
-    public void serverWeather(CommandContext args, CommandSource source) throws CommandException
-    {
-        World world = getWorld(args, source);
-        Weather weather = Weather.get(args.getString(0));
+    public class WeatherCommand {
+        public void server(CommandContext args, CommandSource source) throws CommandException
+        {
+            World world = getWorld(args, source);
+            Weather weather = Weather.get(args.getString(0));
+            
+            if ( weather == null )
+                throw new CommandException("'" + args.getString(0) + "' is not a valid weather state.");
+            
+            VanillaSky.getSky(world).setWeather(weather);
+            ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
+        }
         
-        if ( weather == null )
-            throw new CommandException("'" + args.getString(0) + "' is not a valid weather state.");
-        
-        VanillaSky.getSky(world).setWeather(weather);
-        ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
-    }
-    
-    @Command(aliases = {"weather"}, usage = "<weather> [world]", desc = "Sets the weather of a Vanilla world", min = 1, max = 2)
-    @CommandPermissions("mycommands.weather")
-    @CommandPlatform(Platform.CLIENT)
-    public void clientWeather(CommandContext args, CommandSource source) throws CommandException
-    {
-        World world = getWorld(args, source);
-        Weather weather = Weather.get(args.getString(0));
-        
-        if ( weather == null )
-            throw new CommandException("'" + args.getString(0) + "' is not a valid weather state.");
-        
-        VanillaSky.getSky(world).setWeather(weather);
-        source.sendMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
+        public void client(CommandContext args, CommandSource source) throws CommandException
+        {
+            World world = getWorld(args, source);
+            Weather weather = Weather.get(args.getString(0));
+            
+            if ( weather == null )
+                throw new CommandException("'" + args.getString(0) + "' is not a valid weather state.");
+            
+            VanillaSky.getSky(world).setWeather(weather);
+            source.sendMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
+        }
     }
 }

@@ -1,7 +1,6 @@
 import java.util.Date;
 
 import net.minekingdom.MyCommands.annotated.CommandConfiguration;
-import net.minekingdom.MyCommands.annotated.CommandPlatform;
 
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
@@ -9,7 +8,6 @@ import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
-import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 import org.spout.api.scheduler.TaskPriority;
 
@@ -25,7 +23,6 @@ public class Lag {
     
     @Command(aliases = {"lag"}, desc = "Checks the lag on a server")
     @CommandPermissions("mycommands.lag")
-    @CommandPlatform(Platform.SERVER)
     public void lag(CommandContext args, CommandSource source) throws CommandException
     {
         source.sendMessage(ChatStyle.CYAN, "Please wait " + LagConfig.SAMPLE_TIME.getInt() / 1000f + " seconds while the process is gathering data...\n" +

@@ -1,5 +1,3 @@
-import net.minekingdom.MyCommands.annotated.CommandPlatform;
-
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -8,7 +6,6 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.discrete.Point;
-import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
 
 public class Whois {
@@ -22,7 +19,6 @@ public class Whois {
     
     @Command(aliases = {"whois", "info"}, desc = "Gets information on a player", max = 1)
     @CommandPermissions("mycommands.whois")
-    @CommandPlatform(Platform.SERVER)
     public void whois(CommandContext args, CommandSource source) throws CommandException
     {
         Player player;

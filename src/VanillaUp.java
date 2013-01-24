@@ -7,7 +7,7 @@ import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.discrete.Point;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.material.VanillaMaterials;
+import org.spout.vanilla.plugin.material.VanillaMaterials;
 
 public class VanillaUp {
     

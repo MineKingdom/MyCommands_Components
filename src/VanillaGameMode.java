@@ -6,8 +6,8 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.component.living.neutral.Human;
-import org.spout.vanilla.data.GameMode;
+import org.spout.vanilla.api.data.GameMode;
+import org.spout.vanilla.plugin.component.living.neutral.Human;
 
 public class VanillaGameMode {
     

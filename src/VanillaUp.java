@@ -34,9 +34,6 @@ public class VanillaUp {
                 throw new CommandException("Error: an integer was expected.");
             }
             
-            if ( n < 0 )
-                throw new CommandException("Error: a positive integer was expected.");
-            
             final Player player = (Player) source;
             final Point p = player.getTransform().getPosition();
             

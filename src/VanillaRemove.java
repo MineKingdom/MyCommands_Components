@@ -13,7 +13,7 @@ import org.spout.api.entity.Entity;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.plugin.protocol.entity.creature.CreatureType;
+import org.spout.vanilla.protocol.entity.creature.CreatureType;
 
 public class VanillaRemove {
     
@@ -91,7 +91,7 @@ public class VanillaRemove {
                 
                 for ( Class<? extends Component> type : types )
                 {
-                    if ( e.has(type) )
+                    if ( e.get(type) == null )
                     {
                         e.remove();
                         break;

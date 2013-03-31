@@ -1,3 +1,4 @@
+import org.spout.api.Platform;
 import org.spout.api.Server;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
@@ -8,8 +9,8 @@ import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.api.data.Weather;
-import org.spout.vanilla.plugin.component.world.VanillaSky;
+import org.spout.vanilla.component.world.sky.Sky;
+import org.spout.vanilla.data.Weather;
 
 public class VanillaWeather {
     
@@ -38,29 +39,21 @@ public class VanillaWeather {
     
     @Command(aliases = {"weather"}, usage = "<weather> [world]", desc = "Sets the weather of a Vanilla world", min = 1, max = 2)
     @CommandPermissions("mycommands.weather")
-    public class WeatherCommand {
-        public void server(CommandContext args, CommandSource source) throws CommandException
-        {
-            World world = getWorld(args, source);
-            Weather weather = Weather.get(args.getString(0));
-            
-            if ( weather == null )
-                throw new CommandException("'" + args.getString(0) + "' is not a valid weather state.");
-            
-            VanillaSky.getSky(world).setWeather(weather);
+    public void client(CommandContext args, CommandSource source) throws CommandException
+    {
+        World world = getWorld(args, source);
+        Weather weather = Weather.get(args.getString(0));
+        
+        if ( weather == null )
+            throw new CommandException("'" + args.getString(0) + "' is not a valid weather state.");
+        
+        world.get(Sky.class).setWeather(weather);
+        if (plugin.getEngine().getPlatform() == Platform.CLIENT) {
+            source.sendMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
+        } else if (plugin.getEngine().getPlatform() == Platform.SERVER) {
             ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
         }
         
-        public void client(CommandContext args, CommandSource source) throws CommandException
-        {
-            World world = getWorld(args, source);
-            Weather weather = Weather.get(args.getString(0));
-            
-            if ( weather == null )
-                throw new CommandException("'" + args.getString(0) + "' is not a valid weather state.");
-            
-            VanillaSky.getSky(world).setWeather(weather);
-            source.sendMessage(ChatStyle.CYAN, source.getName() + " sets the weather of " + world.getName() + " to " + args.getString(0) + ".");
-        }
+        
     }
 }

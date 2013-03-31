@@ -4,13 +4,12 @@ import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
-import org.spout.api.command.annotated.Executor;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
-import org.spout.api.plugin.Platform;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.plugin.component.world.VanillaSky;
+import org.spout.api.Platform;
+import org.spout.vanilla.component.world.sky.Sky;
 
 public class VanillaTime {
     
@@ -65,29 +64,19 @@ public class VanillaTime {
             }
         }
     }
-    
+        
     @Command(aliases = {"time"}, desc = "Sets the time of a Vanilla world", min = 1, max = 2)
     @CommandPermissions("mycommands.time")
-    public class TimeCommand {
-        
-        @Executor(Platform.SERVER)
-        public void server(CommandContext args, CommandSource source) throws CommandException
-        {
-            World world = getWorld(args, source);
-            long time = getTime(args, source);
-    
-            VanillaSky.getSky(world).setTime(time);
-            ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " sets the time of " + world.getName() + " to " + (int)(Math.floor(time / 1000 + 6) % 24) + ":" + (int)Math.floor(time % 1000 * 60 / 1000) + ".");
-        }
-        
-        @Executor(Platform.CLIENT)
-        public void client(CommandContext args, CommandSource source) throws CommandException
-        {
-            World world = getWorld(args, source);
-            long time = getTime(args, source);
-    
-            VanillaSky.getSky(world).setTime(time);
+    public void time(CommandContext args, CommandSource source) throws CommandException
+    {
+        World world = getWorld(args, source);
+        long time = getTime(args, source);
+
+        world.get(Sky.class).setTime(time);
+        if (plugin.getEngine().getPlatform() == Platform.CLIENT) {
             source.sendMessage(ChatStyle.CYAN, "You have set the time of " + world.getName() + " to " + (int)(Math.floor(time / 1000 + 6) % 24) + ":" + (int)Math.floor(time % 1000 * 60 / 1000) + ".");
+        } else if (plugin.getEngine().getPlatform() == Platform.SERVER) {
+            ((Server) plugin.getEngine()).broadcastMessage(ChatStyle.CYAN, source.getName() + " sets the time of " + world.getName() + " to " + (int)(Math.floor(time / 1000 + 6) % 24) + ":" + (int)Math.floor(time % 1000 * 60 / 1000) + ".");
         }
     }
 }

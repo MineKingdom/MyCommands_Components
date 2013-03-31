@@ -37,7 +37,7 @@ public class Whois {
             throw new CommandException("The command must target a player.");
         }
         
-        Point p = player.getTransform().getPosition();
+        Point p = player.getScene().getPosition();
         
         source.sendMessage(ChatStyle.CYAN, "Player : " + player.getName() );
         source.sendMessage(ChatStyle.CYAN, "IP Address : " + player.getAddress().getHostAddress() );

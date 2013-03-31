@@ -7,7 +7,7 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.plugin.component.living.neutral.Human;
+import org.spout.vanilla.component.entity.living.Human;
 
 public class VanillaGodMode {
     

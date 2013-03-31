@@ -82,7 +82,7 @@ public class Teleport {
                     throw new CommandException("Error: The targetted player was not found.");
                 
                 destinationName = destinationPlayer.getName();
-                destination = destinationPlayer.getTransform().getPosition();
+                destination = destinationPlayer.getScene().getPosition();
             }
             
             if ( modifierString != null )

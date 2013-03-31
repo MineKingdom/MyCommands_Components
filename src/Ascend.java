@@ -28,9 +28,9 @@ public class Ascend {
         {
             final Player player = (Player) source;
             final World world = player.getWorld();
-            final int x = player.getTransform().getPosition().getBlockX(),
-                      y = player.getTransform().getPosition().getBlockY(),
-                      z = player.getTransform().getPosition().getBlockZ();
+            final int x = player.getScene().getPosition().getBlockX(),
+                       y = player.getScene().getPosition().getBlockY(),
+                       z = player.getScene().getPosition().getBlockZ();
             
             for ( int i = y; i < y + 256; i++ )
             {

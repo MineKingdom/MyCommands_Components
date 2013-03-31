@@ -6,8 +6,8 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.api.data.GameMode;
-import org.spout.vanilla.plugin.component.living.neutral.Human;
+import org.spout.vanilla.component.entity.living.Human;
+import org.spout.vanilla.data.GameMode;
 
 public class VanillaGameMode {
     
@@ -19,8 +19,8 @@ public class VanillaGameMode {
     }
     
     @Command(aliases = {"gamemode", "gm"}, max = 2, 
-            desc = "Changes a player's game mode." +
-    		       "Not specifiying the game mode parameter will cycle the target's current game mode." +
+            desc = "Changes a player's game mode.\n" +
+    		       "Not specifiying the game mode parameter will cycle the target's current game mode.\n" +
     		       "The cycle goes as follow : Survival (0) -> Creative (1) -> Adventure (2) -> Survival (0).")
     @CommandPermissions("mycommands.gamemode")
     public void gamemode(CommandContext args, CommandSource source) throws CommandException

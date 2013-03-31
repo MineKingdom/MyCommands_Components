@@ -5,8 +5,8 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
-import org.spout.vanilla.plugin.VanillaPlugin;
-import org.spout.vanilla.plugin.configuration.VanillaConfiguration;
+import org.spout.vanilla.VanillaPlugin;
+import org.spout.vanilla.data.configuration.VanillaConfiguration;
 
 public class VanillaOnlineMode {
     

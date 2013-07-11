@@ -7,9 +7,9 @@ import org.spout.api.command.annotated.Permissible;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
 import org.spout.api.scheduler.TaskPriority;
-import org.spout.api.util.config.ConfigurationHolder;
-import org.spout.api.util.config.ConfigurationHolderConfiguration;
-import org.spout.api.util.config.yaml.YamlConfiguration;
+import org.spout.cereal.config.ConfigurationHolder;
+import org.spout.cereal.config.ConfigurationHolderConfiguration;
+import org.spout.cereal.config.yaml.YamlConfiguration;
 
 public class Lag {
 

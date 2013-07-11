@@ -1,7 +1,9 @@
+import org.spout.api.Server;
 import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.Permissible;
+import org.spout.api.command.annotated.Platform;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.discrete.Point;
@@ -16,11 +18,12 @@ public class Whois {
     }
 
     @Command(aliases = { "whois", "info" }, desc = "Gets information on a player", max = 1)
+    @Platform(org.spout.api.Platform.SERVER)
     @Permissible("mycommands.whois")
     public void whois(CommandSource source, CommandArguments args) throws CommandException {
         Player player;
         if (args.length() == 1) {
-            player = plugin.getEngine().getPlayer(args.getString(0), false);
+            player = ((Server) plugin.getEngine()).getPlayer(args.getString(0), false);
             if (player == null)
                 throw new CommandException("Player " + args.getString(0) + " could not be found.");
         } else if (source instanceof Player) {

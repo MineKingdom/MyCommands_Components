@@ -1,7 +1,9 @@
+import org.spout.api.Server;
 import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.Permissible;
+import org.spout.api.command.annotated.Platform;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
@@ -20,6 +22,7 @@ public class VanillaGameMode {
             desc = "Changes a player's game mode.\n" 
                     + "Not specifiying the game mode parameter will cycle the target's current game mode.\n" 
                     + "The cycle goes as follow : Survival (0) -> Creative (1) -> Adventure (2) -> Survival (0).")
+    @Platform(org.spout.api.Platform.SERVER)
     @Permissible("mycommands.gamemode")
     public void gamemode(CommandSource source, CommandArguments args) throws CommandException {
         if (source instanceof Player) {
@@ -27,7 +30,7 @@ public class VanillaGameMode {
             Player player = null;
 
             if (args.length() == 2) {
-                player = plugin.getEngine().getPlayer(args.getString(0), false);
+                player = ((Server) plugin.getEngine()).getPlayer(args.getString(0), false);
                 if (player == null)
                     throw new CommandException("The specified player was not found.");
 
@@ -52,7 +55,7 @@ public class VanillaGameMode {
 
                     player = (Player) source;
                 } else {
-                    player = plugin.getEngine().getPlayer(args.getString(0), false);
+                    player = ((Server) plugin.getEngine()).getPlayer(args.getString(0), false);
                     if (player == null)
                         throw new CommandException("The specified player was not found.");
 

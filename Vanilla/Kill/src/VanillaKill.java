@@ -1,7 +1,9 @@
+import org.spout.api.Server;
 import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.Permissible;
+import org.spout.api.command.annotated.Platform;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
@@ -17,12 +19,13 @@ public class VanillaKill {
     }
 
     @Command(aliases = { "kill" }, max = 1, desc = "Kill the specified player.")
+    @Platform(org.spout.api.Platform.SERVER)
     @Permissible("mycommands.kill")
     public void kill(CommandSource source, CommandArguments args) throws CommandException {
         Player player = null;
 
         if (args.length() == 1) {
-            player = plugin.getEngine().getPlayer(args.getString(0), false);
+            player = ((Server) plugin.getEngine()).getPlayer(args.getString(0), false);
 
             if (player == null)
                 throw new CommandException("The specified player was not found.");

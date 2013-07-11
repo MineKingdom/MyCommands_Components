@@ -1,7 +1,9 @@
+import org.spout.api.Server;
 import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.Permissible;
+import org.spout.api.command.annotated.Platform;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.plugin.Plugin;
@@ -20,13 +22,14 @@ public class VanillaInventory {
     }
     
     @Command(aliases = {"inv", "inventory"}, min = 1, max = 1, desc = "Opens the inventory of a player")
+    @Platform(org.spout.api.Platform.SERVER)
     @Permissible("mycommands.inventory")
     public void inventory(CommandSource source, CommandArguments args) throws CommandException
     {
         if ( !(source instanceof Player) )
             throw new CommandException("You must be ingame to open a player's inventory");
         
-        Player player = plugin.getEngine().getPlayer(args.getString(0), false);
+        Player player = ((Server) plugin.getEngine()).getPlayer(args.getString(0), false);
         
         if ( player == null )
             throw new CommandException("'" + args.getString(0) + "' is not online.");

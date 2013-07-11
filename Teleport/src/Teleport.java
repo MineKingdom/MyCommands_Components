@@ -1,8 +1,12 @@
-import org.spout.api.chat.ChatSection;
+import net.minekingdom.MyCommands.annotated.CommandFlags;
+import net.minekingdom.MyCommands.annotated.Flag;
+
+import org.spout.api.Server;
 import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.Permissible;
+import org.spout.api.command.annotated.Platform;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.World;
@@ -18,39 +22,41 @@ public class Teleport {
         this.plugin = plugin;
     }
 
-    @Command(aliases = { "tp", "teleport" }, flags = "f", min = 1, max = 2, usage = "[Player] <Destination>[+(world:x,y,z)]", 
+    
+    @Command(aliases = { "tp", "teleport" }, min = 1, max = 2, usage = "[Player] <Destination>[+(world:x,y,z)]", 
             desc = "Teleports a player to the specified destination.\n" 
                     + "Without the -f flag, the command will try to find a safe location ( i.e. on solid ground, with proper space ) " 
                     + "to teleport the target to.\n" 
                     + "The command supports coordinate modifiers. This means the destination can be modified by adding other coordinates.\n" 
                     + "For instance, it is possible to be teleported 5 blocks higher than the destination using \"<destination>+(0,5,0)\"; " 
                     + "it is even possible to teleport to the destination's coordinate, but in an other world, using \"<destination>+(world:0,0,0)\".")
+    @CommandFlags(value = { "f" }, parameters = { 0 })
+    @Platform(org.spout.api.Platform.SERVER)
     @Permissible("mycommands.teleport")
-    public void teleport(CommandSource source, CommandArguments args) throws CommandException {
+    public void teleport(CommandSource source, CommandArguments args, @Flag("f") String[] f) throws CommandException {
         if (source instanceof Player) {
             final Player player = (Player) source;
 
-            boolean force = args.hasFlag('f');
+            boolean force = f != null;
 
             String[] split;
-            ChatSection targetArgs;
             String targetString;
             String modifierString = null;
 
             Player teleported;
 
             if (args.length() == 1) {
-                targetArgs = args.get(0);
+                targetString = args.getString(0);
                 teleported = player;
             } else {
-                targetArgs = args.get(1);
-                teleported = plugin.getEngine().getPlayer(args.getString(0), false);
+                targetString = args.getString(1);
+                teleported = ((Server) plugin.getEngine()).getPlayer(args.getString(0), false);
             }
 
             if (teleported == null)
                 throw new CommandException("Error: The specified player was not found.");
 
-            split = targetArgs.getPlainString().split("\\+");
+            split = targetString.split("\\+");
             targetString = split[0];
             if (split.length == 2) {
                 modifierString = split[1];
@@ -65,7 +71,7 @@ public class Teleport {
             if (targetString.startsWith("(")) {
                 destination = getVector(teleported.getWorld(), targetString);
             } else {
-                Player destinationPlayer = plugin.getEngine().getPlayer(targetString, false);
+                Player destinationPlayer = ((Server) plugin.getEngine()).getPlayer(targetString, false);
                 if (destinationPlayer == null)
                     throw new CommandException("Error: The targetted player was not found.");
 
@@ -88,7 +94,7 @@ public class Teleport {
                 destinationName = "(" + destination.getWorld().getName() + ":" + destination.getX() + ", " + destination.getY() + ", " + destination.getZ() + ")";
 
             teleported.teleport(destination.add(0, 0.1, 0));
-            source.sendMessage("Teleported to : ", destinationName);
+            source.sendMessage("Teleported to : " + destinationName);
             return;
         }
     }
@@ -149,7 +155,7 @@ public class Teleport {
         }
 
         if (!worldName.equals("")) {
-            World newWorld = plugin.getEngine().getWorld(worldName);
+            World newWorld = ((Server) plugin.getEngine()).getWorld(worldName);
             if (newWorld == null)
                 return null;
 

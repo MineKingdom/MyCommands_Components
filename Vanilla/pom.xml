@@ -1,0 +1,28 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.minekingdom</groupId>
+  <artifactId>Vanilla</artifactId>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+
+  <parent>
+    <groupId>net.minekingdom</groupId>
+    <artifactId>MyCommands_Components</artifactId>
+    <version>1.0</version>
+  </parent>
+
+  <modules>
+    <module>GameMode</module>
+    <module>GodMode</module>
+    <module>Heal</module>
+    <module>Inventory</module>
+    <module>Kill</module>
+    <module>MOTD</module>
+    <module>OnlineMode</module>
+    <module>Remove</module>
+    <module>SpawnEntity</module>
+    <module>Time</module>
+    <module>Up</module>
+    <module>Weather</module>
+  </modules>
+</project>
